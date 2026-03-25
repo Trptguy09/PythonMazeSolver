@@ -2,7 +2,7 @@ from graphics import Line, Point
 
 
 class Cell:
-    def __init__(self, Window):
+    def __init__(self, win=None):
         self.has_left_wall = True
         self.has_right_wall = True
         self.has_top_wall = True
@@ -11,7 +11,8 @@ class Cell:
         self.__y1 = -1
         self.__x2 = -1
         self.__y2 = -1
-        self.__win = Window
+        self.__win = win
+        self.visited = False
 
     def draw(self, x1, y1, x2, y2):
         self.__x1 = x1
@@ -19,33 +20,56 @@ class Cell:
         self.__y1 = y1
         self.__y2 = y2
 
-        if self.has_left_wall:
+        if self.__win is not None:
+
+            # left wall check
 
             p1 = Point(self.__x1, self.__y1)
             p2 = Point(self.__x1, self.__y2)
             left_wall = Line(p1, p2)
-            self.__win.draw_line(left_wall, "blue")
 
-        if self.has_right_wall:
+            if self.has_left_wall:
+                line_color = "blue"
+            else:
+                line_color = "black"
+
+            self.__win.draw_line(left_wall, line_color)
+
+            # right wall check
 
             p1 = Point(self.__x2, self.__y1)
             p2 = Point(self.__x2, self.__y2)
             right_wall = Line(p1, p2)
-            self.__win.draw_line(right_wall, "blue")
 
-        if self.has_top_wall:
+            if self.has_right_wall:
+                line_color = "blue"
+            else:
+                line_color = "black"
+            self.__win.draw_line(right_wall, line_color)
+
+            # top wall check
 
             p1 = Point(self.__x1, self.__y1)
             p2 = Point(self.__x2, self.__y1)
             top_wall = Line(p1, p2)
-            self.__win.draw_line(top_wall, "blue")
 
-        if self.has_bottom_wall:
+            if self.has_top_wall:
+                line_color = "blue"
+            else:
+                line_color = "black"
+            self.__win.draw_line(top_wall, line_color)
+
+            # bottom wall check
 
             p1 = Point(self.__x1, self.__y2)
             p2 = Point(self.__x2, self.__y2)
             bottom_wall = Line(p1, p2)
-            self.__win.draw_line(bottom_wall, "blue")
+
+            if self.has_bottom_wall:
+                line_color = "blue"
+            else:
+                line_color = "black"
+            self.__win.draw_line(bottom_wall, line_color)
 
     def get_center(self):
         center_x = (self.__x1 + self.__x2) / 2
@@ -60,6 +84,5 @@ class Cell:
         line = Line(current_center, target_center)
 
         line_color = "gray" if undo else "red"
-
         if self.__win is not None:
             self.__win.draw_line(line, line_color)
