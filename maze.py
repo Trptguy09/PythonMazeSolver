@@ -115,3 +115,6 @@ class Maze:
         for i in range(self.__num_cols):
             for j in range(self.__num_rows):
                 self.__cells[i][j].visited = False
+
+    def solve(self):
+        return self._solve_r(0, 0)
